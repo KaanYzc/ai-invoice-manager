@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fatura Yönetimi</title>
+
+    <link rel="stylesheet" href="/frontend/style.css">
+    <script src="/frontend/script.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <h1>Fatura Yönetimi</h1>
+        <p>Faturanı yükle, bilgileri kontrol et ve onayla.</p>
+    </header>
+
+    <main>
+        <!-- PDF yükleme -->
+        <section aria-labelledby="upload-title">
+            <h2 id="upload-title">Yeni fatura yükle</h2>
+
+            <form id="upload-form">
+                <label for="invoice-file">PDF faturası seç</label>
+
+                <input
+                    type="file"
+                    id="invoice-file"
+                    name="file"
+                    accept=".pdf,application/pdf"
+                    required
+                >
+
+                <button type="submit" id="upload-button">
+                    Yükle ve bilgileri çıkar
+                </button>
+            </form>
+        </section>
+
+        <!-- Önceden kaydedilmiş faturayı getirme -->
+        <section aria-labelledby="search-title">
+            <h2 id="search-title">Kayıtlı faturayı aç</h2>
+
+            <form id="search-form">
+                <label for="search-id">Fatura kayıt ID’si</label>
+
+                <input
+                    type="number"
+                    id="search-id"
+                    name="id"
+                    min="1"
+                    step="1"
+                    placeholder="Örneğin: 5"
+                    required
+                >
+
+                <button type="submit">Faturayı getir</button>
+            </form>
+        </section>
+
+        <!-- JavaScript işlem ve hata mesajlarını buraya yazacak -->
+        <p id="message" role="status" aria-live="polite"></p>
+
+        <!-- Fatura gelince JavaScript bu bölümü gösterecek -->
+        <section id="invoice-section" hidden>
+            <h2>Fatura bilgileri</h2>
+
+            <p>
+                Kayıt ID’si:
+                <strong id="invoice-id"></strong>
+            </p>
+
+            <p>
+                Onay durumu:
+                <strong id="approval-status"></strong>
+            </p>
+
+            <p>Bilgileri faturanın aslıyla karşılaştırarak kontrol et.</p>
+
+            <form id="invoice-form">
+                <div>
+                    <label for="company-name">Firma adı</label>
+                    <input
+                        type="text"
+                        id="company-name"
+                        name="company_name"
+                    >
+                </div>
+
+                <div>
+                    <label for="invoice-number">Fatura numarası</label>
+                    <input
+                        type="text"
+                        id="invoice-number"
+                        name="invoice_number"
+                    >
+                </div>
+
+                <div>
+                    <label for="invoice-date">Fatura tarihi</label>
+                    <input
+                        type="date"
+                        id="invoice-date"
+                        name="invoice_date"
+                    >
+                </div>
+
+                <div>
+                    <label for="currency">Para birimi</label>
+                    <input
+                        type="text"
+                        id="currency"
+                        name="currency"
+                        placeholder="TRY, USD veya EUR"
+                    >
+                </div>
+
+                <div>
+                    <label for="subtotal">Vergi hariç tutar</label>
+                    <input
+                        type="number"
+                        id="subtotal"
+                        name="subtotal"
+                        step="0.01"
+                    >
+                </div>
+
+                <div>
+                    <label for="tax-amount">Vergi tutarı</label>
+                    <input
+                        type="number"
+                        id="tax-amount"
+                        name="tax_amount"
+                        step="0.01"
+                    >
+                </div>
+
+                <div>
+                    <label for="total-amount">Genel toplam</label>
+                    <input
+                        type="number"
+                        id="total-amount"
+                        name="total_amount"
+                        step="0.01"
+                    >
+                </div>
+
+                <button type="submit" id="save-button">
+                    Değişiklikleri kaydet
+                </button>
+            </form>
+
+            <section aria-labelledby="warnings-title">
+                <h3 id="warnings-title">Kontrol sonuçları</h3>
+                <ul id="warnings-list"></ul>
+            </section>
+
+            <div class="actions">
+                <button type="button" id="approve-button">
+                    Onayla
+                </button>
+
+                <button type="button" id="reject-button">
+                    Reddet
+                </button>
+
+                <button type="button" id="export-button">
+                    Aktarımı dene
+                </button>
+            </div>
+
+            <p>
+                Aktarım şu an deneme aşamasındadır.
+                Gerçek bir muhasebe sistemine gönderim yapılmaz.
+            </p>
+        </section>
+    </main>
+</body>
+</html>
